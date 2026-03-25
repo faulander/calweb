@@ -1,4 +1,7 @@
 <script lang="ts">
+	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
+
 	let {
 		page,
 		totalPages,
@@ -12,7 +15,7 @@
 	function pageUrl(p: number): string {
 		const url = new URL(baseUrl, 'http://localhost');
 		url.searchParams.set('page', String(p));
-		return url.pathname + url.search;
+		return localizeHref(url.pathname + url.search);
 	}
 
 	function visiblePages(): number[] {
@@ -25,13 +28,13 @@
 </script>
 
 {#if totalPages > 1}
-	<nav class="flex items-center justify-center gap-1" aria-label="Pagination">
+	<nav class="flex items-center justify-center gap-1" aria-label={m.pagination_label()}>
 		{#if page > 1}
 			<a
 				href={pageUrl(page - 1)}
 				class="rounded px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
 			>
-				Previous
+				{m.pagination_previous()}
 			</a>
 		{/if}
 
@@ -66,7 +69,7 @@
 				href={pageUrl(page + 1)}
 				class="rounded px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
 			>
-				Next
+				{m.pagination_next()}
 			</a>
 		{/if}
 	</nav>

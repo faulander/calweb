@@ -1,8 +1,11 @@
 <script lang="ts">
+	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
+
 	let {
 		value = '',
-		action = '/books',
-		placeholder = 'Search books...'
+		action = localizeHref('/books'),
+		placeholder = m.search_books()
 	}: {
 		value?: string;
 		action?: string;

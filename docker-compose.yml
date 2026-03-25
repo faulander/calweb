@@ -5,10 +5,7 @@ services:
       - "3000:3000"
     volumes:
       - /path/to/calibre/library:/library:ro
-      - calweb_data:/data
+      - ./data:/data
     environment:
       - SESSION_SECRET=change-me-to-a-random-string
     restart: unless-stopped
-
-volumes:
-  calweb_data:

@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
+	import { authorCount, bookCount } from '$lib/i18n';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 
@@ -7,31 +10,31 @@
 </script>
 
 <svelte:head>
-	<title>Authors — calweb</title>
+	<title>{m.authors_title()}</title>
 </svelte:head>
 
 <div class="space-y-4">
-	<h1 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Authors</h1>
+	<h1 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">{m.authors_heading()}</h1>
 
 	<div class="max-w-md">
-		<SearchBar value={data.search || ''} action="/authors" placeholder="Search authors..." />
+		<SearchBar value={data.search || ''} action="/authors" placeholder={m.search_authors()} />
 	</div>
 
 	<p class="text-sm text-neutral-500 dark:text-neutral-400">
-		{data.authors.total} author{data.authors.total !== 1 ? 's' : ''}
+		{authorCount(data.authors.total)}
 	</p>
 
 	<div class="grid gap-1">
 		{#each data.authors.items as author}
 			<a
-				href="/authors/{author.id}"
+				href={localizeHref(`/authors/${author.id}`)}
 				class="flex items-center justify-between rounded-lg px-4 py-3 hover:bg-neutral-100 dark:hover:bg-neutral-800"
 			>
 				<span class="font-medium text-neutral-900 dark:text-neutral-100">{author.name}</span>
-				<span class="text-sm text-neutral-400">{author.book_count} book{author.book_count !== 1 ? 's' : ''}</span>
+				<span class="text-sm text-neutral-400">{bookCount(author.book_count)}</span>
 			</a>
 		{:else}
-			<p class="py-12 text-center text-neutral-500 dark:text-neutral-400">No authors found.</p>
+			<p class="py-12 text-center text-neutral-500 dark:text-neutral-400">{m.authors_no_results()}</p>
 		{/each}
 	</div>
 

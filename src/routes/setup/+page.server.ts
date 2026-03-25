@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { hasUsers, createUser, createSession } from '$lib/server/auth';
+import * as m from '$lib/paraglide/messages.js';
 
 export const load: PageServerLoad = async () => {
 	if (hasUsers()) throw redirect(302, '/login');
@@ -16,19 +17,19 @@ export const actions: Actions = {
 		const confirmPassword = data.get('confirmPassword')?.toString();
 
 		if (!username || !password) {
-			return fail(400, { error: 'Username and password are required', username });
+			return fail(400, { error: m.setup_error_required(), username });
 		}
 
 		if (username.length < 2) {
-			return fail(400, { error: 'Username must be at least 2 characters', username });
+			return fail(400, { error: m.setup_error_username_short(), username });
 		}
 
 		if (password.length < 8) {
-			return fail(400, { error: 'Password must be at least 8 characters', username });
+			return fail(400, { error: m.setup_error_password_short(), username });
 		}
 
 		if (password !== confirmPassword) {
-			return fail(400, { error: 'Passwords do not match', username });
+			return fail(400, { error: m.setup_error_password_mismatch(), username });
 		}
 
 		const user = createUser(username, password);

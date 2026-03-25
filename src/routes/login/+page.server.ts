@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { authenticateUser, createSession } from '$lib/server/auth';
+import * as m from '$lib/paraglide/messages.js';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) throw redirect(302, '/');
@@ -13,12 +14,12 @@ export const actions: Actions = {
 		const password = data.get('password')?.toString();
 
 		if (!username || !password) {
-			return fail(400, { error: 'Username and password are required', username });
+			return fail(400, { error: m.login_error_required(), username });
 		}
 
 		const user = authenticateUser(username, password);
 		if (!user) {
-			return fail(401, { error: 'Invalid username or password', username });
+			return fail(401, { error: m.login_error_invalid(), username });
 		}
 
 		const sessionId = createSession(user.id);
@@ -26,7 +27,7 @@ export const actions: Actions = {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'lax',
-			secure: false, // set true behind reverse proxy
+			secure: false,
 			maxAge: 30 * 24 * 60 * 60
 		});
 

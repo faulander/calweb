@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
+	import { bookCount } from '$lib/i18n';
 	import BookCard from '$lib/components/BookCard.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
@@ -16,7 +19,7 @@
 			params.delete(key);
 		}
 		params.delete('page');
-		return '/books?' + params.toString();
+		return localizeHref('/books?' + params.toString());
 	}
 
 	function sortUrl(sort: string): string {
@@ -31,38 +34,38 @@
 			params.set('order', 'asc');
 		}
 		params.delete('page');
-		return '/books?' + params.toString();
+		return localizeHref('/books?' + params.toString());
 	}
 </script>
 
 <svelte:head>
-	<title>Books — calweb</title>
+	<title>{m.books_title()}</title>
 </svelte:head>
 
 <div class="space-y-4">
 	<!-- Search + Controls -->
 	<div class="flex flex-col gap-3 sm:flex-row sm:items-center">
 		<div class="flex-1">
-			<SearchBar value={data.query.search || ''} />
+			<SearchBar value={data.query.search || ''} placeholder={m.search_books()} />
 		</div>
 		<div class="flex items-center gap-2">
 			<button
 				onclick={() => (showFilters = !showFilters)}
 				class="rounded-lg border border-neutral-300 px-3 py-2.5 text-sm text-neutral-700 hover:bg-neutral-100 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-800"
 			>
-				Filters {#if data.query.tag || data.query.language || data.query.format}<span class="ml-1 inline-block h-2 w-2 rounded-full bg-neutral-800 dark:bg-neutral-200"></span>{/if}
+				{m.books_filters()} {#if data.query.tag || data.query.language || data.query.format}<span class="ml-1 inline-block h-2 w-2 rounded-full bg-neutral-800 dark:bg-neutral-200"></span>{/if}
 			</button>
 		</div>
 	</div>
 
 	<!-- Sort -->
 	<div class="flex flex-wrap gap-2 text-sm">
-		<span class="text-neutral-500 dark:text-neutral-400">Sort:</span>
+		<span class="text-neutral-500 dark:text-neutral-400">{m.books_sort()}</span>
 		{#each [
-			{ key: 'title', label: 'Title' },
-			{ key: 'added', label: 'Date Added' },
-			{ key: 'published', label: 'Published' },
-			{ key: 'author', label: 'Author' }
+			{ key: 'title', label: m.books_sort_title() },
+			{ key: 'added', label: m.books_sort_added() },
+			{ key: 'published', label: m.books_sort_published() },
+			{ key: 'author', label: m.books_sort_author() }
 		] as opt}
 			<a
 				href={sortUrl(opt.key)}
@@ -83,11 +86,11 @@
 		<div class="grid gap-4 rounded-lg border border-neutral-200 bg-white p-4 sm:grid-cols-3 dark:border-neutral-700 dark:bg-neutral-800">
 			<!-- Tags -->
 			<div>
-				<h3 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Tags</h3>
+				<h3 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">{m.filter_tags()}</h3>
 				<div class="flex flex-wrap gap-1">
 					{#if data.query.tag}
 						<a href={filterUrl('tag', null)} class="rounded bg-red-100 px-2 py-1 text-xs text-red-700 dark:bg-red-900/30 dark:text-red-400">
-							Clear
+							{m.filter_clear()}
 						</a>
 					{/if}
 					{#each data.tags as tag}
@@ -105,11 +108,11 @@
 
 			<!-- Languages -->
 			<div>
-				<h3 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Language</h3>
+				<h3 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">{m.filter_language()}</h3>
 				<div class="flex flex-wrap gap-1">
 					{#if data.query.language}
 						<a href={filterUrl('language', null)} class="rounded bg-red-100 px-2 py-1 text-xs text-red-700 dark:bg-red-900/30 dark:text-red-400">
-							Clear
+							{m.filter_clear()}
 						</a>
 					{/if}
 					{#each data.languages as lang}
@@ -127,11 +130,11 @@
 
 			<!-- Formats -->
 			<div>
-				<h3 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Format</h3>
+				<h3 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">{m.filter_format()}</h3>
 				<div class="flex flex-wrap gap-1">
 					{#if data.query.format}
 						<a href={filterUrl('format', null)} class="rounded bg-red-100 px-2 py-1 text-xs text-red-700 dark:bg-red-900/30 dark:text-red-400">
-							Clear
+							{m.filter_clear()}
 						</a>
 					{/if}
 					{#each data.formats as fmt}
@@ -151,8 +154,8 @@
 
 	<!-- Results info -->
 	<p class="text-sm text-neutral-500 dark:text-neutral-400">
-		{data.books.total} book{data.books.total !== 1 ? 's' : ''}
-		{#if data.query.search}, matching "{data.query.search}"{/if}
+		{bookCount(data.books.total)}
+		{#if data.query.search}, {m.books_matching({ query: data.query.search })}{/if}
 	</p>
 
 	<!-- Book Grid -->
@@ -161,7 +164,7 @@
 			<BookCard {book} />
 		{:else}
 			<p class="col-span-full py-12 text-center text-neutral-500 dark:text-neutral-400">
-				No books found.
+				{m.books_no_results()}
 			</p>
 		{/each}
 	</div>
