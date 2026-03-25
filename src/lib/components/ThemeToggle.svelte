@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$lib/paraglide/messages.js';
+
 	let theme = $state<'light' | 'dark' | 'system'>('system');
 
 	function init() {
@@ -26,8 +28,8 @@
 <button
 	onclick={toggle}
 	class="rounded p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
-	title="Toggle theme ({theme})"
-	aria-label="Toggle theme"
+	title="{m.theme_toggle()} ({theme})"
+	aria-label={m.theme_toggle()}
 >
 	{#if theme === 'light'}
 		<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

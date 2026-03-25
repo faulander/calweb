@@ -1,17 +1,18 @@
 <script lang="ts">
+	import * as m from '$lib/paraglide/messages.js';
 	import type { ActionData } from './$types';
 
 	let { form }: { form: ActionData } = $props();
 </script>
 
 <svelte:head>
-	<title>Login — calweb</title>
+	<title>{m.login_title()}</title>
 </svelte:head>
 
 <div class="flex min-h-screen items-center justify-center bg-neutral-50 px-4 dark:bg-neutral-900">
 	<div class="w-full max-w-sm">
 		<h1 class="mb-8 text-center text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-			calweb
+			{m.app_name()}
 		</h1>
 
 		{#if form?.error}
@@ -23,7 +24,7 @@
 		<form method="POST" class="space-y-4">
 			<div>
 				<label for="username" class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-					Username
+					{m.login_username()}
 				</label>
 				<input
 					type="text"
@@ -38,7 +39,7 @@
 
 			<div>
 				<label for="password" class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-					Password
+					{m.login_password()}
 				</label>
 				<input
 					type="password"
@@ -54,7 +55,7 @@
 				type="submit"
 				class="w-full rounded bg-neutral-800 px-4 py-2.5 font-medium text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 dark:bg-neutral-200 dark:text-neutral-900 dark:hover:bg-neutral-300"
 			>
-				Sign in
+				{m.login_submit()}
 			</button>
 		</form>
 	</div>

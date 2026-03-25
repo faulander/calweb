@@ -1,4 +1,7 @@
 <script lang="ts">
+	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
+
 	let { data } = $props();
 	let book = $derived(data.book);
 
@@ -26,14 +29,14 @@
 </script>
 
 <svelte:head>
-	<title>{book.title} — calweb</title>
+	<title>{book.title} — {m.app_name()}</title>
 </svelte:head>
 
 <div class="space-y-6">
 	<!-- Back link -->
-	<a href="/books" class="inline-flex items-center gap-1 text-sm text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200">
+	<a href={localizeHref('/books')} class="inline-flex items-center gap-1 text-sm text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200">
 		<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7" /></svg>
-		Back to books
+		{m.book_back()}
 	</a>
 
 	<div class="flex flex-col gap-6 sm:flex-row">
@@ -47,7 +50,7 @@
 				/>
 			{:else}
 				<div class="flex aspect-[2/3] w-full items-center justify-center rounded-lg bg-neutral-200 text-neutral-500 dark:bg-neutral-700 dark:text-neutral-400">
-					No cover
+					{m.book_no_cover()}
 				</div>
 			{/if}
 		</div>
@@ -58,29 +61,29 @@
 				<h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{book.title}</h1>
 				<p class="mt-1 text-lg text-neutral-600 dark:text-neutral-400">
 					{#each book.authors as author, i}
-						<a href="/authors/{author.id}" class="hover:underline">{author.name}</a>{#if i < book.authors.length - 1}, {/if}
+						<a href={localizeHref(`/authors/${author.id}`)} class="hover:underline">{author.name}</a>{#if i < book.authors.length - 1}, {/if}
 					{/each}
 				</p>
 			</div>
 
 			{#if book.series}
 				<p class="text-sm text-neutral-500 dark:text-neutral-400">
-					<a href="/series/{book.series.id}" class="hover:underline">{book.series.name}</a> #{book.series.index}
+					<a href={localizeHref(`/series/${book.series.id}`)} class="hover:underline">{book.series.name}</a> #{book.series.index}
 				</p>
 			{/if}
 
 			<!-- Details -->
 			<dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
 				{#if book.publisher}
-					<dt class="text-neutral-500 dark:text-neutral-400">Publisher</dt>
+					<dt class="text-neutral-500 dark:text-neutral-400">{m.book_publisher()}</dt>
 					<dd class="text-neutral-900 dark:text-neutral-100">{book.publisher.name}</dd>
 				{/if}
 				{#if book.pubdate && !book.pubdate.startsWith('0101')}
-					<dt class="text-neutral-500 dark:text-neutral-400">Published</dt>
+					<dt class="text-neutral-500 dark:text-neutral-400">{m.book_published()}</dt>
 					<dd class="text-neutral-900 dark:text-neutral-100">{new Date(book.pubdate).getFullYear()}</dd>
 				{/if}
 				{#if book.languages.length}
-					<dt class="text-neutral-500 dark:text-neutral-400">Language</dt>
+					<dt class="text-neutral-500 dark:text-neutral-400">{m.book_language()}</dt>
 					<dd class="text-neutral-900 dark:text-neutral-100">{book.languages.join(', ')}</dd>
 				{/if}
 			</dl>
@@ -90,7 +93,7 @@
 				<div class="flex flex-wrap gap-1">
 					{#each book.tags as tag}
 						<a
-							href="/tags/{tag.id}"
+							href={localizeHref(`/tags/${tag.id}`)}
 							class="rounded bg-neutral-100 px-2 py-1 text-xs text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
 						>
 							{tag.name}
@@ -101,7 +104,7 @@
 
 			<!-- Download -->
 			<div>
-				<h2 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Download</h2>
+				<h2 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">{m.book_download()}</h2>
 				<div class="flex flex-wrap gap-2">
 					{#each book.formats as fmt}
 						<a
@@ -119,7 +122,7 @@
 			<!-- External links -->
 			{#if book.identifiers.length}
 				<div>
-					<h2 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Links</h2>
+					<h2 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">{m.book_links()}</h2>
 					<div class="flex flex-wrap gap-2">
 						{#each book.identifiers as ident}
 							{@const url = identifierUrl(ident.type, ident.val)}

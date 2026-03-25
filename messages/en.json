@@ -1,4 +1,100 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from en!"
+
+	"app_name": "calweb",
+
+	"nav_home": "Home",
+	"nav_books": "Books",
+	"nav_authors": "Authors",
+	"nav_series": "Series",
+	"nav_tags": "Tags",
+	"nav_logout": "Logout",
+	"nav_toggle_menu": "Toggle menu",
+
+	"theme_toggle": "Toggle theme",
+
+	"login_title": "Login — calweb",
+	"login_username": "Username",
+	"login_password": "Password",
+	"login_submit": "Sign in",
+	"login_error_required": "Username and password are required",
+	"login_error_invalid": "Invalid username or password",
+
+	"setup_title": "Setup — calweb",
+	"setup_subtitle": "Create your admin account to get started.",
+	"setup_username": "Username",
+	"setup_password": "Password",
+	"setup_confirm_password": "Confirm Password",
+	"setup_submit": "Create Account",
+	"setup_error_required": "Username and password are required",
+	"setup_error_username_short": "Username must be at least 2 characters",
+	"setup_error_password_short": "Password must be at least 8 characters",
+	"setup_error_password_mismatch": "Passwords do not match",
+
+	"home_title": "calweb",
+	"home_recently_added": "Recently Added",
+	"home_view_all": "View all",
+
+	"stat_books": "Books",
+	"stat_authors": "Authors",
+	"stat_series": "Series",
+	"stat_tags": "Tags",
+
+	"books_title": "Books — calweb",
+	"books_filters": "Filters",
+	"books_sort": "Sort:",
+	"books_sort_title": "Title",
+	"books_sort_added": "Date Added",
+	"books_sort_published": "Published",
+	"books_sort_author": "Author",
+	"books_no_results": "No books found.",
+	"books_count_one": "{count} book",
+	"books_count_other": "{count} books",
+	"books_matching": "matching \"{query}\"",
+
+	"search_books": "Search books...",
+	"search_authors": "Search authors...",
+	"search_series": "Search series...",
+
+	"filter_tags": "Tags",
+	"filter_language": "Language",
+	"filter_format": "Format",
+	"filter_clear": "Clear",
+
+	"pagination_previous": "Previous",
+	"pagination_next": "Next",
+	"pagination_label": "Pagination",
+
+	"authors_title": "Authors — calweb",
+	"authors_heading": "Authors",
+	"authors_count_one": "{count} author",
+	"authors_count_other": "{count} authors",
+	"authors_no_results": "No authors found.",
+	"authors_back": "Back to authors",
+
+	"series_title": "Series — calweb",
+	"series_heading": "Series",
+	"series_count": "{count} series",
+	"series_no_results": "No series found.",
+	"series_back": "Back to series",
+
+	"tags_title": "Tags — calweb",
+	"tags_heading": "Tags",
+	"tags_no_results": "No tags found.",
+	"tags_back": "Back to tags",
+
+	"book_back": "Back to books",
+	"book_no_cover": "No cover",
+	"book_publisher": "Publisher",
+	"book_published": "Published",
+	"book_language": "Language",
+	"book_download": "Download",
+	"book_links": "Links",
+	"book_count_one": "{count} book",
+	"book_count_other": "{count} books",
+
+	"error_book_not_found": "Book not found",
+	"error_author_not_found": "Author not found",
+	"error_series_not_found": "Series not found",
+	"error_tag_not_found": "Tag not found"
 }

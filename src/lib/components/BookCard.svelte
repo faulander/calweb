@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { BookListItem } from '$lib/server/db';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	let { book }: { book: BookListItem } = $props();
 </script>
 
 <a
-	href="/books/{book.id}"
+	href={localizeHref(`/books/${book.id}`)}
 	class="group block overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800"
 >
 	<div class="aspect-[2/3] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-700">
