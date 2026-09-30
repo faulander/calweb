@@ -45,14 +45,5 @@
 				{/each}
 			</div>
 		{/if}
-		{#if book.formats}
-			<div class="mt-2 flex flex-wrap gap-1">
-				{#each book.formats.split(',') as fmt}
-					<span class="rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
-						{fmt}
-					</span>
-				{/each}
-			</div>
-		{/if}
 	</div>
 </a>
