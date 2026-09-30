@@ -13,7 +13,13 @@ const config = {
 			return isExternalLibrary ? undefined : true;
 		}
 	},
-	kit: { adapter: adapter() }
+	kit: {
+		adapter: adapter(),
+		// The origin header varies (LAN IP:3020 vs. the Netbird reverse-proxy
+		// domain); the app's own session auth is the real security boundary,
+		// so trust all origins for the built-in same-origin form check.
+		csrf: { trustedOrigins: ['*'] }
+	}
 };
 
 export default config;
