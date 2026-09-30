@@ -44,6 +44,7 @@ export interface BookListItem extends Book {
 	series_name: string | null;
 	formats: string;
 	tags: string;
+	language: string | null;
 }
 
 export interface Author {
@@ -192,6 +193,7 @@ export function getBooks(opts: BooksQuery = {}): PaginatedResult<BookListItem> {
 				series_name: string | null;
 				formats: string | null;
 				tags: string | null;
+				language: string | null;
 			},
 			Record<string, string | number>
 		>(
@@ -199,7 +201,8 @@ export function getBooks(opts: BooksQuery = {}): PaginatedResult<BookListItem> {
 				GROUP_CONCAT(DISTINCT a.name) as authors,
 				s.name as series_name,
 				GROUP_CONCAT(DISTINCT d.format) as formats,
-				GROUP_CONCAT(DISTINCT t.name) as tags
+				GROUP_CONCAT(DISTINCT t.name) as tags,
+				GROUP_CONCAT(DISTINCT l.lang_code) as language
 			FROM books b
 			LEFT JOIN books_authors_link bal ON b.id = bal.book
 			LEFT JOIN authors a ON bal.author = a.id
@@ -208,6 +211,8 @@ export function getBooks(opts: BooksQuery = {}): PaginatedResult<BookListItem> {
 			LEFT JOIN data d ON b.id = d.book
 			LEFT JOIN books_tags_link btl ON b.id = btl.book
 			LEFT JOIN tags t ON btl.tag = t.id
+			LEFT JOIN books_languages_link bll ON b.id = bll.book
+			LEFT JOIN languages l ON bll.lang_code = l.id
 			${where}
 			GROUP BY b.id
 			ORDER BY ${orderBy}
@@ -222,7 +227,8 @@ export function getBooks(opts: BooksQuery = {}): PaginatedResult<BookListItem> {
 			authors: r.authors || 'Unknown',
 			series_name: r.series_name,
 			formats: r.formats || '',
-			tags: r.tags || ''
+			tags: r.tags || '',
+			language: r.language ? r.language.split(',')[0] : null
 		})),
 		total,
 		page,
