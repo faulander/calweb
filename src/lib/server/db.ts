@@ -112,7 +112,9 @@ export function getBooks(opts: BooksQuery = {}): PaginatedResult<BookListItem> {
 	const params: Record<string, string | number> = {};
 
 	if (opts.search) {
-		conditions.push('(b.title LIKE $search OR b.author_sort LIKE $search)');
+		conditions.push(
+			'(b.title LIKE $search OR b.author_sort LIKE $search OR b.id IN (SELECT book FROM comments WHERE text LIKE $search))'
+		);
 		params.$search = `%${opts.search}%`;
 	}
 
