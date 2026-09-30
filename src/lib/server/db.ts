@@ -43,6 +43,7 @@ export interface BookListItem extends Book {
 	authors: string;
 	series_name: string | null;
 	formats: string;
+	tags: string;
 }
 
 export interface Author {
@@ -190,19 +191,23 @@ export function getBooks(opts: BooksQuery = {}): PaginatedResult<BookListItem> {
 				authors: string | null;
 				series_name: string | null;
 				formats: string | null;
+				tags: string | null;
 			},
 			Record<string, string | number>
 		>(
 			`SELECT b.*,
 				GROUP_CONCAT(DISTINCT a.name) as authors,
 				s.name as series_name,
-				GROUP_CONCAT(DISTINCT d.format) as formats
+				GROUP_CONCAT(DISTINCT d.format) as formats,
+				GROUP_CONCAT(DISTINCT t.name) as tags
 			FROM books b
 			LEFT JOIN books_authors_link bal ON b.id = bal.book
 			LEFT JOIN authors a ON bal.author = a.id
 			LEFT JOIN books_series_link bsl ON b.id = bsl.book
 			LEFT JOIN series s ON bsl.series = s.id
 			LEFT JOIN data d ON b.id = d.book
+			LEFT JOIN books_tags_link btl ON b.id = btl.book
+			LEFT JOIN tags t ON btl.tag = t.id
 			${where}
 			GROUP BY b.id
 			ORDER BY ${orderBy}
@@ -216,7 +221,8 @@ export function getBooks(opts: BooksQuery = {}): PaginatedResult<BookListItem> {
 			has_cover: Boolean(r.has_cover),
 			authors: r.authors || 'Unknown',
 			series_name: r.series_name,
-			formats: r.formats || ''
+			formats: r.formats || '',
+			tags: r.tags || ''
 		})),
 		total,
 		page,

@@ -36,6 +36,15 @@
 				{book.series_name} #{book.series_index}
 			</p>
 		{/if}
+		{#if book.tags}
+			<div class="mt-1.5 flex flex-wrap gap-1">
+				{#each book.tags.split(',') as tag}
+					<span class="rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300">
+						{tag}
+					</span>
+				{/each}
+			</div>
+		{/if}
 		{#if book.formats}
 			<div class="mt-2 flex flex-wrap gap-1">
 				{#each book.formats.split(',') as fmt}
