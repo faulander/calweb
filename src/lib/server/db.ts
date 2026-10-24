@@ -1,13 +1,24 @@
 import { Database } from 'bun:sqlite';
 import { config } from './config';
 import { join } from 'path';
+import { statSync } from 'fs';
 
 let _db: Database | null = null;
+let _dbStamp = '';
 
+// Reopen the connection when metadata.db changes on disk (replaced file, remount, sync),
+// otherwise a long-lived handle keeps serving the old library state.
 function getDb(): Database {
+	const st = statSync(config.metadataDbPath);
+	const stamp = `${st.ino}:${st.size}:${st.mtimeMs}`;
+	if (_db && stamp !== _dbStamp) {
+		_db.close();
+		_db = null;
+	}
 	if (!_db) {
 		_db = new Database(config.metadataDbPath, { readonly: true });
 		_db.exec('PRAGMA cache_size = -64000');
+		_dbStamp = stamp;
 	}
 	return _db;
 }
